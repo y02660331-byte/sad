@@ -1,0 +1,787 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Don't Become Sad 🤎</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    width: 100%;
+    min-height: 100%;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    background: #e8dcc8;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+    overflow: hidden;
+}
+
+
+/* ================= MAIN CARD ================= */
+
+.card {
+    width: 100%;
+    max-width: 680px;
+    min-height: 380px;
+    padding: 40px 30px;
+
+    background: #f5ead8;
+    border: 1px solid #d8c5a8;
+    border-radius: 20px;
+
+    box-shadow: 0 12px 30px rgba(80,60,35,.18);
+
+    text-align: center;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    animation: cardAppear .8s ease;
+}
+
+.top-message {
+    color: #604c38;
+    font-size: 21px;
+    font-weight: bold;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.main-emoji {
+    font-size: 50px;
+    margin-bottom: 8px;
+}
+
+h1 {
+    color: #604c38;
+    font-size: 36px;
+    margin: 8px 0 15px;
+}
+
+.message {
+    color: #6b5a47;
+    font-size: 18px;
+    line-height: 1.6;
+    max-width: 530px;
+}
+
+.highlight {
+    color: #8b6845;
+    font-weight: bold;
+}
+
+.main-button {
+    margin-top: 25px;
+    padding: 14px 32px;
+
+    border: 0;
+    border-radius: 30px;
+
+    background: #9b7b55;
+    color: white;
+
+    font-size: 16px;
+    cursor: pointer;
+
+    transition: transform .2s ease, background .2s ease;
+}
+
+.main-button:hover {
+    transform: scale(1.06);
+    background: #806344;
+}
+
+.main-button:active {
+    transform: scale(.96);
+}
+
+.hearts {
+    margin-top: 22px;
+    font-size: 22px;
+}
+
+
+/* ================= POPUP ================= */
+
+#popup {
+    position: fixed;
+    inset: 0;
+
+    background: rgba(50,40,30,.5);
+
+    display: none;
+    justify-content: center;
+    align-items: center;
+
+    padding: 18px;
+
+    z-index: 1000;
+}
+
+.popup-box {
+    width: 100%;
+    max-width: 500px;
+    max-height: 85vh;
+
+    overflow-y: auto;
+
+    background: #f8eddb;
+
+    border-radius: 22px;
+
+    padding: 28px 22px;
+
+    text-align: center;
+
+    box-shadow: 0 20px 50px rgba(0,0,0,.25);
+
+    animation: popupIn .4s ease;
+}
+
+.popup-box .emoji {
+    font-size: 45px;
+}
+
+.popup-box h2 {
+    color: #604c38;
+    font-size: 24px;
+    margin: 12px 0;
+}
+
+.popup-box p {
+    color: #6b5a47;
+    font-size: 16px;
+    line-height: 1.7;
+}
+
+.popup-box b {
+    color: #8b6845;
+}
+
+.close-button {
+    margin-top: 20px;
+
+    padding: 12px 25px;
+
+    border: 0;
+    border-radius: 25px;
+
+    background: #9b7b55;
+    color: white;
+
+    font-size: 15px;
+    cursor: pointer;
+}
+
+
+/* ================= CUTE EMOJI ================= */
+
+#animationLayer {
+    position: fixed;
+    inset: 0;
+
+    z-index: 3000;
+
+    display: none;
+    justify-content: center;
+    align-items: center;
+
+    pointer-events: none;
+}
+
+.kissEmoji {
+    font-size: 90px;
+
+    animation: kissPop .7s ease forwards;
+}
+
+.kissMark {
+    position: absolute;
+
+    font-size: 70px;
+
+    opacity: 0;
+
+    animation:
+        markIn .5s ease .5s forwards,
+        markOut .7s ease 2.3s forwards;
+}
+
+
+/* ================= EMOJI RAIN ================= */
+
+#rainLayer {
+    position: fixed;
+    inset: 0;
+
+    z-index: 4000;
+
+    display: none;
+
+    pointer-events: none;
+
+    overflow: hidden;
+}
+
+.rain {
+    position: absolute;
+    top: -70px;
+
+    animation-name: rainFall;
+    animation-timing-function: linear;
+    animation-fill-mode: forwards;
+}
+
+
+/* ================= FINAL MESSAGE ================= */
+
+#finalLayer {
+    position: fixed;
+    inset: 0;
+
+    z-index: 5000;
+
+    display: none;
+    justify-content: center;
+    align-items: center;
+
+    pointer-events: none;
+
+    text-align: center;
+
+    padding: 20px;
+}
+
+.finalText {
+    color: #a45d6f;
+
+    font-size: 64px;
+
+    font-weight: 900;
+
+    line-height: 1.15;
+
+    text-shadow:
+        0 5px 18px rgba(120,70,80,.18);
+
+    animation:
+        finalPop 1s cubic-bezier(.17,.67,.32,1.4)
+        forwards;
+}
+
+.finalText span {
+    display: block;
+
+    font-size: 45px;
+
+    margin-top: 12px;
+}
+
+
+/* ================= ANIMATIONS ================= */
+
+@keyframes cardAppear {
+
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes popupIn {
+
+    from {
+        opacity: 0;
+        transform: scale(.75);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes kissPop {
+
+    0% {
+        opacity: 0;
+        transform: scale(.2);
+    }
+
+    60% {
+        opacity: 1;
+        transform: scale(1.2);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes markIn {
+
+    from {
+        opacity: 0;
+        transform: scale(.2);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes markOut {
+
+    from {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    to {
+        opacity: 0;
+        transform: scale(.6);
+    }
+}
+
+@keyframes rainFall {
+
+    from {
+        top: -70px;
+
+        transform: rotate(0deg);
+
+        opacity: 1;
+    }
+
+    to {
+        top: 110vh;
+
+        transform: rotate(360deg);
+
+        opacity: 1;
+    }
+}
+
+@keyframes finalPop {
+
+    0% {
+        opacity: 0;
+        transform: scale(.25);
+    }
+
+    60% {
+        opacity: 1;
+        transform: scale(1.12);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+
+/* ================= MOBILE ================= */
+
+@media (max-width: 600px) {
+
+    .card {
+        min-height: 350px;
+        padding: 30px 18px;
+    }
+
+    .top-message {
+        font-size: 18px;
+    }
+
+    .main-emoji {
+        font-size: 44px;
+    }
+
+    h1 {
+        font-size: 28px;
+    }
+
+    .message {
+        font-size: 16px;
+    }
+
+    .kissEmoji {
+        font-size: 70px;
+    }
+
+    .kissMark {
+        font-size: 55px;
+    }
+
+    .finalText {
+        color: #a45d6f;
+        font-size: 42px;
+    }
+
+    .finalText span {
+        font-size: 30px;
+    }
+}
+</style>
+</head>
+
+
+<body>
+
+
+<!-- ================= MAIN PAGE ================= -->
+
+<div class="card">
+
+    <div class="top-message">
+        You are my strong girl 🥺🤎<br>
+        Aise sad nahi hote na 😥<br>
+        Chalo ab jaldi se smile kardo 😊
+    </div>
+
+    <div class="main-emoji">
+        🥺🤎
+    </div>
+
+    <h1>
+        Don't Become Sad
+    </h1>
+
+    <div class="message">
+        Hey... don't let one bad moment ruin your whole day.
+        <br><br>
+
+        <span class="highlight">
+            You are stronger than you think.
+        </span>
+    </div>
+
+    <button
+        class="main-button"
+        onclick="startSequence()">
+
+        Click Here 🤎
+
+    </button>
+
+    <div class="hearts">
+        🤎 ✨ 🌸 ✨ 🤎
+    </div>
+
+</div>
+
+
+<!-- ================= POPUP ================= -->
+
+<div id="popup">
+
+    <div class="popup-box">
+
+        <div class="emoji">
+            🥺🤎✨
+        </div>
+
+        <h2>
+            Ek baat suno...
+        </h2>
+
+        <p>
+
+            Agar tum aise hi sad rahoge to kaise chalega?
+
+            <br><br>
+
+            Aisa nahi karte haan 🥺
+            Ab tum new jagah aaye ho to happy raho
+            aur aise couples ko dekh ke sad nahi hote.
+
+            <br><br>
+
+            Tumhe nahi pata is duniya ka
+            <b>sabse beautiful couple</b>
+            pata hai kon hai? 👀
+
+            <br><br>
+
+            Apne keyboard me
+            <b>Q</b> aur <b>R</b> ke beech me dekho...
+
+            <br><br>
+
+            Tumhe pata chal jayega 😭🤎✨
+
+        </p>
+
+        <button
+            class="close-button"
+            onclick="closePopup()">
+
+            Okay, Ab Smile Karo 😊
+
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- ================= CUTE EMOJI ================= -->
+
+<div id="animationLayer">
+
+    <div class="kissEmoji">
+        💋
+    </div>
+
+    <div class="kissMark">
+        💖✨
+    </div>
+
+</div>
+
+
+<!-- ================= EMOJI RAIN ================= -->
+
+<div id="rainLayer"></div>
+
+
+<!-- ================= FINAL MESSAGE ================= -->
+
+<div id="finalLayer">
+
+    <div class="finalText">
+
+        LOVE YOU SO MUCH
+
+        <span>
+            🤎🥰😘✨
+        </span>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* ================= VARIABLES ================= */
+
+let sequenceTimer = null;
+let sequenceStarted = false;
+
+
+/* ================= START ================= */
+
+function startSequence() {
+
+    if (sequenceStarted) {
+        return;
+    }
+
+    sequenceStarted = true;
+
+    /* Show popup */
+
+    document.getElementById("popup").style.display = "flex";
+
+
+    /* Wait 10 seconds */
+
+    sequenceTimer = setTimeout(function() {
+
+        showKiss();
+
+    }, 10000);
+}
+
+
+/* ================= CLOSE POPUP ================= */
+
+function closePopup() {
+
+    document.getElementById("popup").style.display = "none";
+
+}
+
+
+/* ================= KISS ================= */
+
+function showKiss() {
+
+    const layer =
+        document.getElementById("animationLayer");
+
+    layer.style.display = "flex";
+
+
+    /*
+       Kiss animation lasts 3 seconds.
+    */
+
+    setTimeout(function() {
+
+        layer.style.display = "none";
+
+        startRain();
+
+    }, 3000);
+}
+
+
+/* ================= RAIN ================= */
+
+function startRain() {
+
+    const rain =
+        document.getElementById("rainLayer");
+
+    rain.innerHTML = "";
+
+    rain.style.display = "block";
+
+    rain.style.opacity = "1";
+
+    rain.style.transition = "none";
+
+
+    const emojis = [
+        "😘",
+        "🥰"
+    ];
+
+
+    /*
+       Create 45 falling emojis.
+    */
+
+    for (let i = 0; i < 45; i++) {
+
+        const item =
+            document.createElement("div");
+
+        item.className = "rain";
+
+        item.textContent =
+            emojis[
+                Math.floor(
+                    Math.random() * emojis.length
+                )
+            ];
+
+
+        /* Position */
+
+        item.style.left =
+            Math.random() * 100 + "%";
+
+
+        /* Size */
+
+        item.style.fontSize =
+            (25 + Math.random() * 25) + "px";
+
+
+        /* Speed */
+
+        item.style.animationDuration =
+            (2.5 + Math.random() * 1.5) + "s";
+
+
+        /* Delay */
+
+        item.style.animationDelay =
+            Math.random() * .5 + "s";
+
+
+        rain.appendChild(item);
+
+    }
+
+
+    /*
+       Rain lasts 4 seconds.
+    */
+
+    setTimeout(function() {
+
+        rain.style.transition =
+            "opacity .8s ease";
+
+        rain.style.opacity = "0";
+
+
+        /*
+           Wait for fade,
+           then show final message.
+        */
+
+        setTimeout(function() {
+
+            rain.style.display = "none";
+
+            rain.innerHTML = "";
+
+            showFinalMessage();
+
+        }, 800);
+
+    }, 4000);
+
+}
+
+
+/* ================= FINAL MESSAGE ================= */
+
+function showFinalMessage() {
+
+    const final =
+        document.getElementById("finalLayer");
+
+    final.style.display = "flex";
+
+}
+
+
+/* ================= OUTSIDE POPUP ================= */
+
+document.getElementById("popup").addEventListener(
+    "click",
+    function(event) {
+
+        if (event.target === this) {
+
+            closePopup();
+
+        }
+
+    }
+);
+
+</script>
+
+</body>
+</html>
+```
